@@ -16,8 +16,8 @@ Follow these steps to setup your machine:
 ### Visual Studio
 
 1. Connect to your VM using RDP and logon with the supplied admin credentials.
-1. Open a PowerShell (PS) prompt.
-1. Install **Visual Studio** by pasting the two lines below into the PS console window. Accept any default prompts and press `Install`.
+2. Open a PowerShell (PS) prompt.
+3. Install **Visual Studio** by pasting the two lines below into the PS console window. Accept any default prompts and press `Install`.
 ```
 (New-Object System.Net.WebClient).DownloadFile("https://authstore100.blob.core.windows.net/software/vs_community.exe","$env:USERPROFILE\Downloads\vs_community.exe")
 
@@ -31,14 +31,14 @@ $env:USERPROFILE\Downloads\vs_community.exe --add Microsoft.VisualStudio.Workloa
 
 Invoke-Item "$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe"
 ```
-1. From the PS console type `restart-computer` to **Reboot** your VM.
-1. Connect to your VM using RDP and logon with the supplied admin credentials.
-1. Open a PowerShell (PS) prompt.
-1. Type `Invoke-Item 'C:\Program Files\Docker\Docker\Docker Desktop.exe'` to start **Docker Desktop** - *Ignore warnings about depricated versions of Windows or failing to start Docker*.
+2. From the PS console type `restart-computer` to **Reboot** your VM.
+3. Connect to your VM using RDP and logon with the supplied admin credentials.
+4. Open a PowerShell (PS) prompt.
+5. Type `Invoke-Item 'C:\Program Files\Docker\Docker\Docker Desktop.exe'` to start **Docker Desktop** - *Ignore warnings about depricated versions of Windows or failing to start Docker*.
 
 ### Other Configs
 
-3. Disable the built-in firewall
+1. Disable the built-in firewall
 ```
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 ``\
@@ -84,13 +84,13 @@ You will need an **outlook.com** email address to complete this part of the lab.
 
 1. Sign in to the [Azure portal](https://portal.azure.com/) using your new account. You won't be able to create any Azure Resources as this account won't have an Azure subscription however it will have created a new Azure AD Free tenant for you.
 > The domain name of the tenant is based on your username, e.g if you signed-in as *workshopuser99@outlook.com*, a new tenant called **workshopuser99outlook.onmicrosoft.com** is created.
-1. From the blue search bar at the top of the screen type `Azure Active Directory` and click the link which appears under *Services*. This will take you to the homepage for your new AAD tenant. If under **Basic Information** the *Name* and *Primary Domain* values are blank, logoff, wait 5 minutes then log back-in again.
-1. From the menu on the left hand side, under **Manage** click *Users*.
-1. From the top menu, click **+ New User**.
-1. Under *Identity*, set the **Username** to be *bobsmith*.
-1. Enter **Bob Smith** as the *Name*.
-1. Make a note of the *Password*.
-1. Click **Create** at the bottom of the page.
+2. From the blue search bar at the top of the screen type `Azure Active Directory` and click the link which appears under *Services*. This will take you to the homepage for your new AAD tenant. If under **Basic Information** the *Name* and *Primary Domain* values are blank, logoff, wait 5 minutes then log back-in again.
+3. From the menu on the left hand side, under **Manage** click *Users*.
+4. From the top menu, click **+ New User**.
+5. Under *Identity*, set the **Username** to be *bobsmith*.
+6. Enter **Bob Smith** as the *Name*.
+7. Make a note of the *Password*.
+8. Click **Create** at the bottom of the page.
 
 This concludes the creation of the Azure AD tenent. You will in a later lab come back and configure it further.
 
