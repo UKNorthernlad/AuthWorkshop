@@ -56,43 +56,76 @@ As assumption has been made that you are familiar with Node.js development, so t
 
 You will start with a partially written application and slowly add-in the functionallity needed to support OIDC.
 
-1. Open the `\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 4` folder in VSCode.
+1. Open the sample folder in VSCode.
 ```
 cd .\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 4
 
 code .
 ```
-2. cd \temp
-3. mkdir ex1part4
-4. cd ex1part4
-5. npm install -g nodemon
-6. npm init -y
-7. npm install openid-client
-8. Add a new "start" script to the package.json file
+2. npm install -g nodemon
+
+3. Now run the application to see its current state:
 ```
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon ."
-  },
+nodemon .
 ```
-9. Add an *index.js* file then add the code below. This will make a connection to the IdP and download its *metadata* which is a description of the services & configuration values it offers:
+> Open a browser at `http://localhost:8081`. You should see a basic application homepage.
+> * Under the H1 heading, it says "undefined" - this will eventually show your login name.
+> 
+> There are two links:
+> 
+> * The `SecretPage` is currently accessible but eventually you will change this so that it can only be accessed by authenticated users.
+> * The `Identity Provider` link takes you to the KeyCloak IdP.
+
+4. Review lines 1-10 of the application. This is standard Node.js/Express setup code.
+
+5. Line 48 sets the application listening on port 8081.
+
+6. Lines 100-105 and 123-126 are the handlers for the root Homepage & SecretPage.
+
+7. Replace lines 12-15 with the following to create an `Issuer` object which will hold configuration information about your IdP and also generate *nonce* values. These are used to help prevent replay attacks.
 ```
-const { Issuer } = require('openid-client');
-Issuer.discover('http://localhost:8080/auth/realms/myrealm/') // => Promise
-  .then(function (keyCloakIssuer) {
+// OIDC Setup
+var {Issuer} = require('openid-client');
+var {generators} = require('openid-client');
+var nonce = generators.nonce();
+```
+
+8. Replace lines 51-65 will the following:
+```
+var client;
+
+Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
+.then(function (keyCloakIssuer) {
     console.log('Discovered issuer %s', keyCloakIssuer.issuer);
     console.log('Metadata %O', keyCloakIssuer.metadata);
-  });
-  ```
-10. Browse to `http://localhost:8080/auth/realms/myrealm/` to check that KeyCloak is up and running, if not, start another Docker container as described at https://www.keycloak.org/getting-started/getting-started-docker.
-> It can take several minutes for the application to startup inside the container - so be patient. When you see `**Admin console listening on http://127.0.0.1:9990**` in the output window, you'll know it's up and running. You can then browse to `http://localhost:8080/auth/admin/` to login with admin/admin credentials.
-11. Make sure you follow the part of the above setup guide to create a Realm called `myrealm` and also a user called `myuser` (remember that a *Realm* is the equivalent of an AAD Tenant). Don't worry about following the part on creating a client, there are steps coming up shortly explaining what you need to do.
-12. Run `npm start` to execute the program.
-> This simple program will connect to a well known URL endpoint for your Realm and display the IdP metadata.
 
-The output should look similar to the following:
+    client = new keyCloakIssuer.Client({
+        client_id: 'myfirstapp',
+        redirect_uris: ['http://localhost:8081/callback'],
+        response_types: ['id_token'],
+        // id_token_signed_response_alg (default "RS256")
+      }); // => Client
+
+  });
 ```
-PS C:\temp\ex1part4> node .
+
+> * Lines 53-56 will query your KeyCloak IdP for the `myrealm` and return detailed configuration settings & options.
+> * The code from 99-104 configure the application with its:
+>   * `client_id` which must match that configured in the IdP
+>   * `redirect_uri` which an an application URL that will receive and process tokens from the IdP. This must match the same value configured in the IdP.
+>   * `response_types` states that we will only require an ID Token when we authenticate (i.e. we won't be needing any Access Tokens).
+
+9. Hit Ctrl+C to save your changes. Nodemon will automatically reload the application.
+
+10. Browse to `http://localhost:8080/auth/realms/myrealm/` to view the metadata that KeyCloak provides. This includes things such as the public key which is used to verify any tokens it issues.
+
+> It can take several minutes for KeyCloak to startup inside the container - so be patient. When you see `**Admin console listening on http://127.0.0.1:9990**` at the bottom of the window from where you launched the container, you'll know it's up and running.
+> * If KeyCloak is not answering, try to create another Docker container as described at https://www.keycloak.org/getting-started/getting-started-docker.
+> *  Make sure you follow the part of the above setup guide to create a Realm called `myrealm` and also a user called `myuser` (remember that a *Realm* is the equivalent of an AAD Tenant).
+> * Don't worry about following the part for creating a client, there are steps coming up shortly explaining what you need to do.
+
+11. View the output from your Nodemon console, you should see the metadata has been downloaded. The output should look similar to the following:
+```
 Discovered issuer http://localhost:8080/auth/realms/myrealm
 Metadata {
   claim_types_supported: [ 'normal' ],
@@ -312,49 +345,256 @@ Error: connect ECONNREFUSED 127.0.0.1:8080
   port: 8080
 }
 ```
-13. Rename `index.js` to `metadata.js` - you will be able to run this page anytime to ensure that KeyCloak is running and that your application is capable of taking to it.
 
-Now let's configure an application in KeyCloak. Initally we are going to configure an *Implicit Flow* application which allows the full ID Token to be passed via the browser (just like the very first AAD example you completed above):
+Now let's configure an application in KeyCloak. We are going to configure an *Implicit Flow* application which allows the full ID Token to be passed via (and possibly read by) the browser.  This is just like the very first AAD example you completed above:
 
-14. In the KeyCloak admin console, ensure you are still logged-in as the `admin` user and the Realm is set to `myrelam` (top left hand side of the screen).
-15. Click `clients` in the menu, then on the far right of the screen, click `Create`.
-16. Set *ClientId* to `myfirstapp`.
-17. Set *Root URL* to `http://localhost:8081`.
-18. Press `Save` to return to the *Settings* tab.
-19. Locate the *Implicit Flow Allowed* settings switch and set this to `On`.
-20. Press `Save` at the bottom of the screen.
+12. Login to KeyCloak admin console at `http://localhost:8080/auth/` as the `admin` user and ensure the Realm is set to `myrelam` (top left hand side of the screen).
 
-Now you will create the application code:
+13. Click `clients` in the menu, then on the far right of the screen, click `Create`.
 
-21. Create a new `index.js` file.
-22. npm install express
-23. 
+14. Set *ClientId* to `myfirstapp`.
+
+15. Set *Root URL* to `http://localhost:8081`.
+
+> Notice these last two settings match values you configured into the application.
+
+16. Press `Save` to return to the *Settings* tab.
+
+17. Locate the *Implicit Flow Allowed* settings switch and set this to `On`.
+
+18. Press `Save` at the bottom of the screen.
+
+You now have an IdP which is configured to issue Tokens. Let's configure the rest of the Node.js application to request & process one.
+
+21. Replace lines 107-119 with the following:
+```
+// Login page - Redirects the browser to the URL constructed by the client.authorizationUrl call.
+app.get ('/login', (request, response) => {
+    
+    var authURL = client.authorizationUrl({
+        scope: 'openid email profile',
+        response_mode: 'form_post',
+        //response_mode: 'fragment',
+        nonce,
+      });
+      console.log(`Redirecting to IdP at: ${authURL}`);
+      console.log();
+      response.redirect(authURL);
+})
+```
+> This is an Express page handler.
+> 
+> When a user clicks the `Login` link on the homepage, they are directed to `/login` which is rendered from this code. It uses the `client` object seen earlier to build a URL to the KeyCloak Idp. It will look something like this:
+>
+> `http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/auth?client_id=myfirstapp&scope=openid%20email%20profile&response_type=id_token&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fcallback&response_mode=form_post&nonce=oI1AaCYwT2Sm7A4CwgeqAQ-n4wvqozjsAHgqlk6iJwk`
+> 
+> Notice that:
+>
+> * It contains a reference to the Realm: `http://localhost:8080/auth/realms/myrealm/`
+>
+> * We are wanting to use `openid-connect` as the authentication protocol, specifically we are now wanting to actually authenticate: `/protocol/openid-connect/auth`
+>
+> * We identify ourselves as the `myfirstapp` application: `client_id=myfirstapp`
+>
+> * We are requesting certain information be contained inside the returned token: `scope=openid%20email%20profile`. These so-called `scopes` are defined in the IdP.
+>
+> * We are requesting an *ID Token* but no Access Token: `response_type=id_token`
+>
+> * We tell the IdP which URL our application is listening on where it will process any sent tokens: `redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fcallback`. This URL must match the one configured in the IdP.
+>
+> * The IdP should send the *ID Token* in the form of *x-www-form-urlencoded* data encoded in the body of an HTTP POST request to the *redirect_uri*.
+
+22. Save the code so far and browse to `http://localhost:8081`. After you press the `Login` link you will be redirected to the login page of the KeyCloak IdP where you can login with the `myuser` account.
+
+> After logging in KeyCloak, you will be redirected back to `http://localhost:8081/callback` (try using the developer tools in the browser to confirm this).
+>
+> **Problem**: You don't currently have a page called `/callback` to receive the token so expect to see an error: `Cannot POST /callback`
+>
+> One of the responsibilities of the `/callback` page is to extract the data from the new ID Token and store it, usually in HTTP Session state. Before you can create the callback page, you need to enable the session cookie functionallity.
 
 
+23. Replace lines 17-18 to enable HTTP Session state:
+```
+// Session cookie infrastructure
+var session = require('express-session');
+```
 
+24. Each time a browser makes a call to the application, any cookies for that domain are automatically sent (this is part of the HTTP standard - it's nothing Node or OIDC specific).
 
+     The *Session cookie*, normally called `connect.sid` in Express based Node.js applications needs to be extracted and any data inside it should be made available to the application.
+     
+     Replace lines 36-44 with the code below to configure an Express middlewear.
+```
+// Middlewear to read session cookie on each request
+app.use(
+    session({
+        secret: "somekey",
+        resave: false,
+        saveUninitialized: false,
+        //store: store, // Save the session data in the mongoDB. Default is in memory.
+    })
+);
+```
+> To prevent users tampering with the session cookie in their browser (e.g. chaning their username!) to gain elevated privledges, the cookie is nearly always encrypted (or at least digitally signed). See how the above code contains a `secret` which is used to encrypt token before they are sent and to decrypt them once they are sent back.
+>
+> The secret should be kept secret! Harding coding it as shown here is only suitable for development or training purposes. In reality this should be passed into the application at execution time, perhaps via an environment variable.
 
+Now the HTTP Session infrastructure is in place, let's get back to the `/callback` page:
 
+25. Replace lines 128-160 with code below.
 
+    Line 129 contains a handler which listens for HTTP POST requests to the `/callback` URL. The *body* of the request is extracted into a variable called `params`.
 
+    Line 132 is the function which inspects the token to ensure it has not been tampered with (which could happen because it is passed via the browser). Tokens are digitally signed by the IdP and the public certificate to check the signature was downloaded as part of the metadata seen way back in step 10. 
 
+    As long as the Token checks out, lines 140 & 143 set some key values in the session cookie.
+```
+// Callback handler. This page receives the token from KeyCloak IdP via the POST body, confirms it's legit, extracts the claims and sets values in the session cookie.
+app.post ('/callback', urlEncodedParser, (request, response) => {
+    const params = client.callbackParams(request);
 
+    var claims =  client.callback('/', params, { nonce }).then(function(tokenSet){
 
+        console.log('Received and validated tokens %j', tokenSet);
+        const tokenClaims = tokenSet.claims()
+        var claimsMessage = util.format('%j', tokenClaims);
+        console.log(claimsMessage);
 
+        // Set session variable to indicate user is now authenticated.
+        request.session.isAuth = true;
 
+        // Set userName session variable. Will be read back on subsequent pages.
+        request.session.userName = tokenClaims.email;
 
+        // Extract and set session variables for any other claims from the token as you'll not see it again.
+        // Typically you'd extract the unique identifier for the user (e.g. a UUID/GUID) or other unique name.
+        // This might be used for keying user content in a locally attached database.
 
+        return claimsMessage;
+    });
 
+    // Display the claims & token information in the browser for debugging purposes.
+    // In a real application, you would automatically redirect back to the homepage or secured resource.
+    claims.then(function(c) {
+        response.type('html');
+        response.send('<html><h1>Token</h1><p>' + request.body.id_token + '</p><h1>Claims</h1><pre>' + c + '</pre><a href="/">Return to Homepage</a>');
+      }).catch(err => {
+          console.log(err);
+      });
+});
+```
+26. Save the code so far and browse to `http://localhost:8081`. Login using the `myuser` account.
+> This time, the `/callback` page will display the base64 encoded token and the decoded claims inside it.
+>
+> In a real application you would not display these of course, it's done here to *pause* the normal flow and help you understand what is happening.
+>
+> If you want, you could modify the application by updating the `.then` handler in line 154 to redirect to the homepage. 
 
+27. Press the `Return to Homepage` link to get back to the beginning. Notice this time that an email address should be displayed under the main H1 title block.
 
+28. Open your browser's *Developer Tools* and on the **Application** tab, under *Storage*->*Cookies* notice you now have a new cookie called `connect.sid`.
+> If you delete this cookie and relate the homepage, you'll notice the email address changes back to `Unauthenticated`. Pressing `Login` again will fix the issue.
 
+Once a user is logged-in, it is possible to use some unique & immutable piece of data from their token as the key for storing data in other systems. The next time they login, the token will contain this same unique data point which is critical if data retreival is to take place.
 
+Another reason for authenticating the user is to control which parts of an application they can access or APIs they can call. To do this you need to include code in each webpage which tests if the user is authenticated (and typically also extracts *who* they are). Once this is known you can limit access to certain features/pages or change functionallty depending on who they are.
 
+You are now going to secure the `SecretPage` so that only authenticated users can access it.
 
+29. Replace lines 67-92 with the code below.
 
+    This is an Express middlewear component, which is designed to process incomming requests.
+    
+    Line 78 is checking to see if the request if for `/secretpage`, if so it then checks the session cookie to get the `userName` value. If this exists, it means the user has already authenticated. If it is missing (meaning they have yet to login), it displays an error.
 
+    Finally in Line 92 the middlewear is activated and all incoming requests are routed through it.
+```
+// Middlewear to log debugging information and protect the SecretPage.
+ const auth = (req, res, next) => {
+    console.log(req.url);
+    console.log(req.session);
 
+     if(req.session.isAuth) {
+        console.log(`Session cookie userName = ${req.session.userName}`); 
+     } else {
+         console.log("Not authenticated.");
+     };
 
+     if(req.url === '/secretpage'){
+         if(req.session.userName){
+            console.log(`Accessing the SecretPage as ${req.session.userName}`);
+         } else {
+            console.log('Tried to access the SecretPage but not authenticated.');
+            var err = new Error('You are not authenticated - a real application would now redirect you to /login.');
+            err.status = 401;
+            return next(err);
+         }      
+     }
+     next();
+ };
+
+// Use the "auth" middlewear, i.e. process each request through it.
+app.use(auth);
+```
+
+30. Save the code so far and browse to `http://localhost:8081`. Click the `Login` link.
+> You might notice this time you don't need to actually login but yet you are still granted an ID Token. Why do you think this is?
+
+31. Now from the Homepage, click the `SecretPage` link. You should be able to view the page.
+
+32. Close and reopen the browser. Now clicking on the `SecretPage` link should display an error. This is because the session cookie is memory resident only and not cached in the browser.
+
+### Replacing in-memory storage with a database.
+
+Session cookies which are stored in the user's browser don't actually contain the real data. The cookie value is in reality just a unique string of numbers/letters (albeit encrypted/signed) that when sent back to the server can be used to lookup an in-memory table of Session objects.
+
+If you loose or delete the cookie in the browser, there is no way to reference the data stored server side. This is why deleting the `connect.sid` cookie appears to log you out because they server now can't check if you are logged-in or not. 
+
+Similarly, if the server or application restarts any in-memory data is lost and your session cookie now points to something which doesn't exist. The result is the same, you appear to have logged-off. 
+
+You will now add-in a MongoDB to store the Session data.
+
+33. Replace Lines 20-34 with the code below.
+
+    Lines 21 defines a connection string to a MongoDB server and database.
+
+    In line 26 a connection is made.
+
+    Line 31 defines the Collection where the data will be stored. *If you come from a SQL background, think of a "Collection" as being similar to a Table*.
+```
+// MongoDB to store Session data
+const mongoURI = "mongodb://mongoadmin:mongoadminpassword@127.0.0.1:27017/sessions?authSource=admin";
+var mongoose = require('mongoose');
+var MongoDBSession = require('connect-mongodb-session')(session);
+
+// Connect
+mongoose.connect(mongoURI, {useNewUrlParser: true,useUnifiedTopology: true,})
+.then(res => { console.log("MongoDB Connected.");})
+.catch( err => {console.log(`MongoDB Connect Error ====> ${err}`);});
+
+// Define Collection name
+var store = new MongoDBSession({
+    uri : mongoURI,
+    collection : "mySessions",
+});
+```
+34. Now you have defined *where* to store the Session data, you need to actually enable it. Uncomment line 42 (the **store** object key)to instruct the Session state middlewewar to use the database.
+
+    Your code should now look like this:
+```
+// Middlewear to read session cookie on each request
+app.use(
+    session({
+        secret: "somekey",
+        resave: false,
+        saveUninitialized: false,
+        store: store, // Save the session data in the mongoDB. Default is in memory on webserver
+    })
+);
+```
+35. Save the code so far and browse to `http://localhost:8081`. Click the `Login` link.
+
+36. Using the `MongoDB Compass` application installed earlier, press `Refresh`, then find the `sessions` database, followed by the `mySessions` collection. You should now see the Session data has been stored in the server.
 
 ## Exercise 2 - Secure WebServer Application that uses a backend API
 For this second exercise you are going to build a "Secure Web Server" application. "Secure" in this context refers to an application that runs on a remote server and where the end-user is unable to see the source code or (more importantly) the configuration the application uses to support authentication. This is in contrast to a client-side application which runs in the browser where the user can "view source" at any time.

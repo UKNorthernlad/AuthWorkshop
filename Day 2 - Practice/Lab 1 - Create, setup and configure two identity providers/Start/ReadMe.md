@@ -101,7 +101,7 @@ This section will setup an on-premises identity provider running inside a Docker
 
 > A good beginner tutorial for running KeyCloak and configuring a user can be found on the KeyCloak website. Rather than copy the instructions here, follow the guide at https://www.keycloak.org/getting-started/getting-started-docker to create a docker container, create a new user and even test the application is working by making use of a test application hosted on the KeyCloak website.
 
->> Don't worry if you don't get the test application working, as long as you have started the container, create a Realm and a test user you are can consider this stage to be completed. You will create a Client application in a later lab.
+>> Don't worry if you don't get the test application working, as long as you have started the container, created a Realm and a test user called `myuser` you can consider this stage to be completed. You will create a Client application in a later lab.
 
 ## Part 3 - Create a MongoDB
 A MongoDB will be used by some of the Node.js/Express applications you will build to store session cookies. As MongoDB is available as a Docker image, it's simply a case of running:
