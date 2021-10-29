@@ -108,4 +108,14 @@ A MongoDB will be used by some of the Node.js/Express applications you will buil
 ```
 docker run --name mongodb -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=mongoadminpassword mongo
 ```
+Now download the MongoDB management UI:
+```
+(New-Object System.Net.WebClient).DownloadFile("https://downloads.mongodb.com/compass/mongodb-compass-1.28.4-win32-x64.zip","$env:USERPROFILE\Downloads\mongodb-compass-1.28.4-win32-x64.zip")
+
+Expand-Archive -LiteralPath "$env:USERPROFILE\Downloads\mongodb-compass-1.28.4-win32-x64.zip" -DestinationPath "$env:USERPROFILE\Downloads\mongodb-compass"
+
+Invoke-Item "$env:USERPROFILE\Downloads\mongodb-compass\MongoDBCompass.exe"
+```
+When prompted for a connection string, use `mongodb://mongoadmin:mongoadminpassword@127.0.0.1:27017/?authSource=admin`. Ensure you can browser the databases.
+
 
