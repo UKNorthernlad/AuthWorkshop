@@ -13,6 +13,8 @@ Most of the setup steps are initialed from the command line but there are a coup
 
 Follow these steps to setup your machine:
 
+### Visual Studio
+
 1. Connect to your VM using RDP and logon with the supplied admin credentials.
 1. Open a PowerShell (PS) prompt.
 1. Install **Visual Studio** by pasting the two lines below into the PS console window. Accept any default prompts and press `Install`.
@@ -21,6 +23,8 @@ Follow these steps to setup your machine:
 
 $env:USERPROFILE\Downloads\vs_community.exe --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetCoreTools --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended
 ```
+### Docker Desktop
+
 1. Install **Docker Desktop** by pasting the two lines below into the PS console window. Accept any default prompts and press `Install`.
 ```
 (New-Object System.Net.WebClient).DownloadFile("https://authstore100.blob.core.windows.net/software/DockerDesktopInstaller.exe","$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe")
@@ -31,10 +35,16 @@ Invoke-Item "$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe"
 1. Connect to your VM using RDP and logon with the supplied admin credentials.
 1. Open a PowerShell (PS) prompt.
 1. Type `Invoke-Item 'C:\Program Files\Docker\Docker\Docker Desktop.exe'` to start **Docker Desktop** - *Ignore warnings about depricated versions of Windows or failing to start Docker*.
-1. Disable the built-in firewall
+
+### Other Configs
+
+3. Disable the built-in firewall
 ```
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-```
+``\
+
+### Chocolatey
+
 1. Download & install Chocolatey package manager
 ```
 Set-ExecutionPolicy Bypass -Scope Process -Force;
@@ -43,6 +53,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force;
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 1. Close and reopen the PowerShell console to pickup changes in the PATH environment variable.
+
+### Other Software
+
 1. Install some key choco packages we are going to need.
 ```
 choco install nodejs -y
