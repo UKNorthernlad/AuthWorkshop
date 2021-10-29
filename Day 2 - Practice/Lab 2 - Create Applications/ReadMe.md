@@ -54,7 +54,14 @@ Let's now move to an application which uses Node.js and KeyCloak as the IdP. You
 
 As assumption has been made that you are familiar with Node.js development, so the steps below are the bare minimum you'll need to follow to get the lab completed.
 
-1. mkdir c:\temp
+You will start with a partially written application and slowly add-in the functionallity needed to support OIDC.
+
+1. Open the `\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 4` folder in VSCode.
+```
+cd .\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 4
+
+code .
+```
 2. cd \temp
 3. mkdir ex1part4
 4. cd ex1part4
