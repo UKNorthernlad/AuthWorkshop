@@ -41,7 +41,7 @@ Invoke-Item "$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe"
 1. Disable the built-in firewall
 ```
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-``\
+```
 
 ### Chocolatey
 
