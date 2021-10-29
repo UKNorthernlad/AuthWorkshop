@@ -52,7 +52,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force;
 
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
-1. Close and reopen the PowerShell console to pickup changes in the PATH environment variable.
+2. Close and reopen the PowerShell console to pickup changes in the PATH environment variable.
 
 ### Other Software
 
