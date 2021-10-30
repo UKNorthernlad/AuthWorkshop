@@ -9,7 +9,7 @@ To avoid any local installation/setup/permissions problems, the labs will be com
 
 Your instructor will provide the logon details (IP/Username/Password) which you can use to Remote Desktop (RDP) into the server however you will need to ensure this machine has all the required software installed as the supplied image will have none of the tools you need.
 
-If you have an existing development machine you may also use that, espeically if it's got all the software you need setup already or just as you like. The provided machine is a Windows OS however you can just as easy run these labs on MacOS or Linux. You'll have to make your own adjustments in the setup section but the labs to actuially create OIDC based applications will be the same.
+If you have an existing development machine you may also use that, espeically if it's got all the software you need setup already or just as you like. The provided machine is a Windows OS however you can just as easy run these labs on MacOS or Linux. You'll have to make your own adjustments in the setup section but the labs to actually create OIDC based applications will be the same.
 
 Most of the setup steps are initialed from the command line but there are a couple of places where UI interaction is required.
 
