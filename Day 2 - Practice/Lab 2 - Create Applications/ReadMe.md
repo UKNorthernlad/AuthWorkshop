@@ -596,6 +596,14 @@ app.use(
 
 36. Using the `MongoDB Compass` application installed earlier, press `Refresh`, then find the `sessions` database, followed by the `mySessions` collection. You should now see the Session data has been stored in the server.
 
+37. Finally, notice on the homepage that there is a link to `Logout` however pressing this results in an error. Create a new page handler to implement this by copying the existing `Login` handler, but replacing the body of the function with:
+```
+request.session.destroy((err) => {
+   if(err) throw err;
+   request.redirect('/');
+});
+```
+
 ## Exercise 2 - Secure WebServer Application that uses a backend API
 For this second exercise you are going to build a "Secure Web Server" application. "Secure" in this context refers to an application that runs on a remote server and where the end-user is unable to see the source code or (more importantly) the configuration the application uses to support authentication. This is in contrast to a client-side application which runs in the browser where the user can "view source" at any time.
 
