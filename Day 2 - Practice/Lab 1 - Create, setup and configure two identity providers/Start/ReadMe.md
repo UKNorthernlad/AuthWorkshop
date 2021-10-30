@@ -1,4 +1,4 @@
-# Lab 1 - Create, setup and configure two identity providers
+# Lab 1 - Create & setup your development machine and configure two identity providers.
 
 ## Part 1 - Setup your development environment
 
