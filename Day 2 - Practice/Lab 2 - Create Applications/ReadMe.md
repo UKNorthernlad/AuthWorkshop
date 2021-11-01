@@ -21,7 +21,7 @@ For this first exercise you are going to build a basic server-side web applicati
 
 Whilst the first few parts will use Azure AD (AAD), don't let this worry you too much. OIDC works the same whether using AAD, KeyCloak or any other 3rd party IdP product. The URLs used may be different and the way to configure the product might be done in code rather than through a UI but the aim here is to concentrate on OIDC and not the IdP being used.
 
-### Part 1 - A Visual Studio C# application using AAD.
+### Task 1 - A Visual Studio C# application using AAD.
 Microsoft already has an suitable quickstart lab for this most basic case. It offers an *automatic* or *manual* option to configure the sample code and it's recommended that you use the **manual** option so that you get exposure to configuring all the required parts.
 
 The sample application makes use of the *Microsoft Authentication Library* (MSAL) which provides some important OIDC related features which perform tasks such as confirming JWT tokens are legitimate and have not been tampered with. This is the reason why you won't see any code which performs these sorts of checks.
@@ -35,22 +35,22 @@ This sample uses the *Implicit* flow (response_type=id_token) and is perfect for
 1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-aspnet-core-webapp and follow the instructions. Upon completion of that excersise, return here.
 2. Review the code, especially the lines you commened out above. Add them back in and run the application again. What's the difference this time?
 
-### Part 2 - A Visual Studio Code Node.js application using AAD & MSAL for Node.
+### Task 2 - A Visual Studio Code Node.js application using AAD & MSAL for Node.
 This is pretty much the same exercise as previous but instead you will be using Node.js, AAD and MSAL for Node.js. The only difference is that this time the application is using the *authorization* code flow which means that AAD doesn't produce a full JWT ID token, but instead only a special *authorization code* which it gives to the browser - it then hands that to the Node.js application. This in turn uses its own special *secret* password AND the auth code to speak directly to AAD to obtain the JWT. The upshot of this is that the ID JWT token is never given directly to the browser and the user can't read its contents.
 
 1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-webapp-msal and follow the instructions, returning here afterwards.
 
 Besides MSAL for Node.js (which is the offical Microsoft supported authentication library for AAD), other alternative *npm* packages exist to perform OIDC authentication & token processing. Common ones include *OpenID-Client* and *Passport.js*. 
 
-### Part 3 (Optional) - A Node.js application which uses Passport.js
+### Task 3 (Optional) - A Node.js application which uses Passport.js
 In this quickstart, you download and run a code sample that demonstrates how to set up OpenID Connect authentication in a web application built using Node.js with Express and Passport.js but the end result is pretty much the same as that in the previous section. Whilst the code may look very different (because you are using a different npm package) or Redirect URIs may not be the same, the process of configuring Applications in AAD and inserting values into the code remains unchanged.
 
 One advantage of using authentication libaries such as Passport.js is that you can customize how the login/logout process works by adding code into your own handlers. However as you can see from the code sample, it means your application can be full of boiler-plate code.
 
 1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-webapp and follow the instructions, returning here afterwards.
 
-### Part 4 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Implicit Flow.
-Let's now move to an application which uses Node.js and KeyCloak as the IdP. You created a KeyCloak docker container in the setup lab, but now you are going to configure it with an application, in much the same way as you did for Azure AD. You will then create a Node.js application and install the *OpenId-Client* npm package.
+### Task 4 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Implicit Flow.
+Let's now move to an application which uses Node.js and KeyCloak as the IdP. You created a KeyCloak docker container in the setup lab, but now you are going to configure it with an application, in much the same way as you did for Azure AD. It will be configured to use the `Implicit Flow` aka `Public Client Flow` to issue tokens. You will then create a Node.js application and install the *OpenId-Client* npm package.
 
 As assumption has been made that you are familiar with Node.js development, so the steps below are the bare minimum you'll need to follow to get the lab completed.
 
@@ -58,7 +58,7 @@ You will start with a partially written application and slowly add-in the functi
 
 1. Open the sample folder in VSCode.
 ```
-cd .\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 4
+cd .\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Task 4
 
 code .
 ```
@@ -331,7 +331,7 @@ Metadata {
 ```
 If you see something similar to the error message below, there is a good change that nothing is listening on port 8080. In other words, your Docker container is not running correctly.
 ```
-PS C:\temp\ex1part4> node .
+PS C:\temp\ex1Task4> node .
 node:internal/process/promises:246
           triggerUncaughtException(err, true /* fromPromise */);
           ^
@@ -604,31 +604,54 @@ request.session.destroy((err) => {
 });
 ```
 
-### Part 5 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Authorisation Code Flow.
-Open ID Connect has a number of different ways to obtain an ID and/or Access Token. In part 4 above you used the `Implicit Flow` where-by the full ID Token is returned from KeyCloak as an HTML page with the token in a hidden field on a form. The browser then automatically performs an HTTP POST of the data to the /callback endpoint from where the token is extracted.
+### Task 5 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Authorisation Code Flow.
+Open ID Connect has a number of different ways to obtain an ID and/or Access Token. In Task 4 above you used the `Implicit Flow` (sometimes called *Public Flow*) where-by the full ID Token is returned from KeyCloak as an HTML page with the token in a hidden field on a form. The browser then automatically performs an HTTP POST of the data to the /callback endpoint from where the token is extracted.
 
-The downside of this is that the client browser can read all the data in the token as it is typically only digitally signed and not encrypted. But what if you don't want the user to see the token as it flows through their machine? Perhaps it contains data you would rather they did not see, e.g. a credit score?
+The downside of this is that the client browser can read all the data in the token as it is typically only digitally-signed and not encrypted. But what if you don't want the user to see the token as it flows through their machine? Perhaps it contains data you would rather they did not see, e.g. a credit score?
 
-You are now going to build a `Confidential Client` application. This has the ability to obtain an ID Token (and optionally an Access Token) directly without it being passed via the client's browser.
+You are now going to build a `Confidential Client` application. This has the ability to obtain an ID Token (and optionally an Access Token) directly without it being passed via the client's browser. This is often refered to as the `Authorization Code Flow` or `Authorization Code Grant`.
 
-A defining feature of a Secure web application is that it can store **secrets** aka passwords in configuration files or environment variables on the server which can be used to obtain ID & Access tokens which are then used to identify the user or access backend APIs.
+Don't be confused by the name `Confidential Client`, this is not refering to anything executing in the browser, i.e. it's not a Single Page Applicaiton. The term refers to the Node application running on the server which typically then acts as a client to connect to a remote API. *Confidential* refers to the fact it can store **secrets** (aka passwords) on the server, typically in configuration files or environment variables which can be used to obtain the required tokens.
+
+You are now going to use the starter code in the `\AuthWorkshop\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 5` folder to build an `Authorization Code Flow` application.  You will notice it is really just a cut down version of the code you completed in the last task. Session handling, the /login, /callback & /secretpage pages are all still there, it's just some of the authentication code which is changing.
+
+1. Login to the KeyCloak admin console - http://localhost:8080
+2. From the left hand menu. click `Clients`, then go into the settings for the `myfirstapp`.
+3. Change the *Access Type* setting to `confidential`.
+4. Press `Save` at the bottom of the screen.
+5. Select the *Credentials* tab at the top of the page and make a copy of the **Secret** assigned to the client application (it will be a GUID).
+6. Open `\AuthWorkshop\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 5` in Visual Studio Code.
+7. Reviewing the code you should see its pretty much the same as where the last task finished, however there are a few changes.
+8. Uncomment lines 108-110. Notice that the `response_mode: 'form_post'` property has been removed because it is only required to specify how you want tokens returned via the browser (using either an HTTP POST or URL Fragment). The *Authorisation Code flow* doesn't return any tokens via the browser so the *response_mode* setting has been removed to keep the code cleaner.
+
+9. Change line 61 to read:
+```
+response_types: ['code'],
+```
+> This indicates that we now want to use an `Authorization Code` flow. Once the user has logged-in to KeyCloak it returns a special code to the /callback page rather than the full ID Token.
+
+10. Update the `client_secret` setting in line 59 with the GUID you saved from earlier. The application uses the `client_id` and `client_secret` (which you can think of as a username & password) to connect back to KeyCloak on a special URL where it passes in the `Authorization Code` from above. The IdP then returns the proper ID Token.
+11. Review line 126. Notice now the `/callback` page is an HTTP `Get` rather than HTTP `Post` as before, which means the `urlEncodedParser` that was used before is nolonger required.
+12. Notice also that line 128 has been simplfied and the `{nonce}` that was used before has gone. This is nolonger required as the codes produced in an Authorization Code flow are always unique.
+13. Save the code so far, launch the application with `nodemon .` and browse to `http://localhost:8081`.
+14. After you press the `Login` link you will be redirected to the login page of the KeyCloak IdP where you can login with the `myuser` account. Afterwards you will be redirected to the `/callback` URL. 
+> Remember now the `/callback` URL will extract the Code which is visible in the browser address bar but in the background will connect to KeyCloak, use its appID & secret along with the Code to redeem these for the real ID Token.
+>
+> The `/callback` page will then print out the Code and Claims from inside the ID Token. Just as before we same the information inside a session cookie and the application will perform exactly as it did previously.
+
+### TODO - Task 6 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC PKCE Flow.
+
+TODO - https://developers.onelogin.com/openid-connect/guides/auth-flow-pkce
 
 
+## Exercise 2 - Confidential Client Application that uses a backend API
+The next logical step is to build an application that runs on a server but needs to talk to a remove API in the context of the logged-on user. To do this you need to make two key changes to your application:
 
+1. Define the backend API as its own unique client application in KeyCloak.
+2. Inform KeyCloak that the FrontEnd application (myfirstapp) will need to call the BackEnd API (backendAPI).
+2. Configure KeyCloak to issue an `Access Token` alongside the `ID Token` when somebody tries to use the FrontEnd application. The application running on the server will then use the Access Token to make calls to the remote API.
 
-
-
-
-
-## Exercise 2 - Secure WebServer Application that uses a backend API
-
-
-### Part 1 - A Node.js application that uses KeyCloak and talks to a backend API.
-
-
-
-
-
+### Task 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
 
 
@@ -651,13 +674,13 @@ A defining feature of a Secure web application is that it can store **secrets** 
 ## Exercise 3 - Advanced WebServer Application that uses custom backend API scopes.
 For this third ......
 
-### Part 1 - A Visual Studio C# application.
+### Task 1 - A Visual Studio C# application.
 XXXXXXXXXXXXX
 
-### Part 2 - User Scopes v Application Scopes
+### Task 2 - User Scopes v Application Scopes
 XXXXXXXXXXXXX
 
-### Part 3 - A Visual Studio Code Node.js application.
+### Task 3 - A Visual Studio Code Node.js application.
 XXXXXXXXXXXXX
 
 
@@ -711,8 +734,8 @@ https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-no
 ## Exercise 5 - Background Services/Daemon Applications.
 XXXXXXXXXXXXX
 
-### Part 1 - A Visual Studio C# application.
+### Task 1 - A Visual Studio C# application.
 https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-netcore-daemon
 
-### Part 2 - Node.js Application
+### Task 2 - Node.js Application
 https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-console
