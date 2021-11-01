@@ -132,9 +132,7 @@ app.get ('/callback', (request, response) => {
     .then(tokenSet => {
 
         console.log('Received and validated tokens %j', tokenSet);
-        const tokenClaims = tokenSet.claims()
-        var claimsMessage = util.format('%j', tokenClaims);
-        console.log(claimsMessage);
+        const tokenClaims = tokenSet.claims();
 
         // Set session variable to indicate user is now authenticated.
         request.session.isAuth = true;
@@ -146,15 +144,25 @@ app.get ('/callback', (request, response) => {
         // Typically you'd extract the unique identifier for the user (e.g. a UUID/GUID) or other unique name.
         // This might be used for keying user content in a locally attached database.
 
-        return claimsMessage;
+        var result = {
+            "id_token" :      util.format('%j', tokenSet.id_token).replace(new RegExp('"', 'g'), ''),
+            "id_claims" :     util.format('%j', tokenSet.claims()).replace(new RegExp('"', 'g'), ''),
+            "access_token" :  util.format('%j', tokenSet.access_token).replace(new RegExp('"', 'g'), '')
+        };
 
+        return result;
     });
 
     // Display the claims & token information in the browser for debugging purposes.
     // In a real application, you would automatically redirect back to the homepage or secured resource.
-    claims.then(function(c) {
+    claims.then(function(result) {
         response.type('html');
-        response.send('<html><h1>Code</h1><p>' + request.query.code + '</p><h1>Claims</h1><pre>' + c + '</pre><a href="/">Return to Homepage</a>');
+
+        var code = '<h1>Code</h1><p>' + request.query.code + '</p>';
+        var idtoken = '<h1>ID Token</h1><p>' + result.id_token + '</p><p><a target="id_token" href="http://jwt.ms/#id_token=' + result.id_token + '">Click here to decode token</a></p>';
+        var accesstoken = '<h1>Access Token</h1><p>' + result.access_token + '</p> <p><a target="access_token" href="http://jwt.ms/#access_token=' + result.access_token + '">Click here to decode token</a></p>';
+
+        response.send('<html>' + code + idtoken + accesstoken + '<a href="/">Return to Homepage</a></html>');
       }).catch(err => {
           console.log(err);
       });

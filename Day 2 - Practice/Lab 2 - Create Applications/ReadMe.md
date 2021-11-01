@@ -605,39 +605,53 @@ request.session.destroy((err) => {
 ```
 
 ### Task 5 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Authorisation Code Flow.
-Open ID Connect has a number of different ways to obtain an ID and/or Access Token. In Task 4 above you used the `Implicit Flow` (sometimes called *Public Flow*) where-by the full ID Token is returned from KeyCloak as an HTML page with the token in a hidden field on a form. The browser then automatically performs an HTTP POST of the data to the /callback endpoint from where the token is extracted.
+Open ID Connect has a number of different ways to obtain an ID and/or Access Token. In Task 4 above you used the `Implicit Flow` (sometimes called *Public Flow*) where the full ID Token is returned from KeyCloak as an HTML page with the token in a hidden field on a form. The browser then automatically performs an HTTP POST of the data to the /callback endpoint from where the token is extracted.
 
-The downside of this is that the client browser can read all the data in the token as it is typically only digitally-signed and not encrypted. But what if you don't want the user to see the token as it flows through their machine? Perhaps it contains data you would rather they did not see, e.g. a credit score?
+The downside of this is that the client browser can read all the data in the form. But what if you don't want the user to see the token as it flows through their machine? Perhaps it contains data you would rather they did not see, e.g. a credit score?
 
-You are now going to build a `Confidential Client` application. This has the ability to obtain an ID Token (and optionally an Access Token) directly without it being passed via the client's browser. This is often refered to as the `Authorization Code Flow` or `Authorization Code Grant`.
+You are now going to build a `Confidential Client` application. This has the ability to obtain an ID Token and an Access Token directly without it being passed via the client's browser. This is often refered to as the `Authorization Code Flow` or `Authorization Code Grant`.
 
-Don't be confused by the name `Confidential Client`, this is not refering to anything executing in the browser, i.e. it's not a Single Page Applicaiton. The term refers to the Node application running on the server which typically then acts as a client to connect to a remote API. *Confidential* refers to the fact it can store **secrets** (aka passwords) on the server, typically in configuration files or environment variables which can be used to obtain the required tokens.
+Don't be confused by the name `Confidential Client`. This is not refering to anything executing in the browser, i.e. it's not a Single Page Applicaiton. The term refers to the Node.js application running on the server which typically then acts as a client to connect to a remote API. *Confidential* refers to the fact it can store **secrets** (aka passwords) on the server, typically in configuration files or environment variables which can be used to obtain the required tokens.
 
-You are now going to use the starter code in the `\AuthWorkshop\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 5` folder to build an `Authorization Code Flow` application.  You will notice it is really just a cut down version of the code you completed in the last task. Session handling, the /login, /callback & /secretpage pages are all still there, it's just some of the authentication code which is changing.
+You are now going to use some starter code to build an `Authorization Code Flow` application.  You will notice it is really just a cut down version of the code you completed in the last task. Session handling, the /login, /callback & /secretpage pages are all still there, it's just some of the authentication code which is changing.
+
+Let's begin by making the nessesary changes to the *Client* application in KeyCloak.
 
 1. Login to the KeyCloak admin console - http://localhost:8080
+
 2. From the left hand menu. click `Clients`, then go into the settings for the `myfirstapp`.
+
 3. Change the *Access Type* setting to `confidential`.
+
 4. Press `Save` at the bottom of the screen.
+
 5. Select the *Credentials* tab at the top of the page and make a copy of the **Secret** assigned to the client application (it will be a GUID).
 6. Open `\AuthWorkshop\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Part 5` in Visual Studio Code.
-7. Reviewing the code you should see its pretty much the same as where the last task finished, however there are a few changes.
-8. Uncomment lines 108-110. Notice that the `response_mode: 'form_post'` property has been removed because it is only required to specify how you want tokens returned via the browser (using either an HTTP POST or URL Fragment). The *Authorisation Code flow* doesn't return any tokens via the browser so the *response_mode* setting has been removed to keep the code cleaner.
 
-9. Change line 61 to read:
+> Reviewing the code you should see it is very similar to Task 4 End, however there are a few changes.
+
+7. Uncomment lines 108-110. Notice that the `response_mode: 'form_post'` property has been removed because it is only required to specify how you want tokens returned via the browser (using either an HTTP POST or URL Fragment). The *Authorisation Code flow* doesn't return any tokens via the browser so the *response_mode* setting has been removed to keep the code cleaner.
+
+8. Change line 61 to read:
 ```
 response_types: ['code'],
 ```
+
 > This indicates that we now want to use an `Authorization Code` flow. Once the user has logged-in to KeyCloak it returns a special code to the /callback page rather than the full ID Token.
 
-10. Update the `client_secret` setting in line 59 with the GUID you saved from earlier. The application uses the `client_id` and `client_secret` (which you can think of as a username & password) to connect back to KeyCloak on a special URL where it passes in the `Authorization Code` from above. The IdP then returns the proper ID Token.
-11. Review line 126. Notice now the `/callback` page is an HTTP `Get` rather than HTTP `Post` as before, which means the `urlEncodedParser` that was used before is nolonger required.
-12. Notice also that line 128 has been simplfied and the `{nonce}` that was used before has gone. This is nolonger required as the codes produced in an Authorization Code flow are always unique.
-13. Save the code so far, launch the application with `nodemon .` and browse to `http://localhost:8081`.
-14. After you press the `Login` link you will be redirected to the login page of the KeyCloak IdP where you can login with the `myuser` account. Afterwards you will be redirected to the `/callback` URL. 
+9. Update the `client_secret` setting in line 59 with the GUID you saved from earlier. The application uses the `client_id` and `client_secret` (which you can think of as a username & password) to connect back to KeyCloak on a special URL where it passes in the `Authorization Code` from above. The IdP then returns the proper ID Token.
+
+10. Review line 126. Notice now the `/callback` page is an HTTP `Get` rather than HTTP `Post` as before, which means the `urlEncodedParser` that was used before is nolonger required.
+
+11. Notice also that line 128 has been simplfied and the `{nonce}` that was used before has gone. This is nolonger required as the codes produced in an Authorization Code flow are always unique.
+
+12. Save the code so far, launch the application with `nodemon .` and browse to `http://localhost:8081`.
+
+13. After you press the `Login` link you will be redirected to the login page of the KeyCloak IdP where you can login with the `myuser` account. Afterwards you will be redirected to the `/callback` URL. 
+
 > Remember now the `/callback` URL will extract the Code which is visible in the browser address bar but in the background will connect to KeyCloak, use its appID & secret along with the Code to redeem these for the real ID Token.
 >
-> The `/callback` page will then print out the Code and Claims from inside the ID Token. Just as before we same the information inside a session cookie and the application will perform exactly as it did previously.
+> The `/callback` page will then print out the Code and Claims from inside the ID Token. Just as before we save the information inside a session cookie and the application will perform exactly as it did previously.
 
 ### TODO - Task 6 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC PKCE Flow.
 
