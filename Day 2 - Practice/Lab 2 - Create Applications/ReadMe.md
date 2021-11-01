@@ -661,6 +661,8 @@ The next logical step is to build an application that runs on a server but needs
 
 ### Task 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
+1. XXXXX
+
 ## Exercise 3 - Single Page Web Applications
 In this 4th exercise you will create a typical **Single Page Application** which will pull data from an backend API. Whilst this may appear to be similar to Exercise 2 there is one important difference. This application is unable to securely store a "secret" (as the user could view the source code at any time) therefore a different "flow" must be used to obtain the id/access token.
 
