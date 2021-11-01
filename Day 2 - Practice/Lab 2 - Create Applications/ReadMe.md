@@ -49,7 +49,7 @@ One advantage of using authentication libaries such as Passport.js is that you c
 
 1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-webapp and follow the instructions, returning here afterwards.
 
-### Part 4 - A Node.js application which uses KeyCloak IdP & OpenId-Client.
+### Part 4 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Implicit Flow.
 Let's now move to an application which uses Node.js and KeyCloak as the IdP. You created a KeyCloak docker container in the setup lab, but now you are going to configure it with an application, in much the same way as you did for Azure AD. You will then create a Node.js application and install the *OpenId-Client* npm package.
 
 As assumption has been made that you are familiar with Node.js development, so the steps below are the bare minimum you'll need to follow to get the lab completed.
@@ -604,17 +604,26 @@ request.session.destroy((err) => {
 });
 ```
 
+### Part 5 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Authorisation Code Flow.
+Open ID Connect has a number of different ways to obtain an ID and/or Access Token. In part 4 above you used the `Implicit Flow` where-by the full ID Token is returned from KeyCloak as an HTML page with the token in a hidden field on a form. The browser then automatically performs an HTTP POST of the data to the /callback endpoint from where the token is extracted.
+
+The downside of this is that the client browser can read all the data in the token as it is typically only digitally signed and not encrypted. But what if you don't want the user to see the token as it flows through their machine? Perhaps it contains data you would rather they did not see, e.g. a credit score?
+
+You are now going to build a `Confidential Client` application. This has the ability to obtain an ID Token (and optionally an Access Token) directly without it being passed via the client's browser.
+
+A defining feature of a Secure web application is that it can store **secrets** aka passwords in configuration files or environment variables on the server which can be used to obtain ID & Access tokens which are then used to identify the user or access backend APIs.
+
+
+
+
+
+
+
+
 ## Exercise 2 - Secure WebServer Application that uses a backend API
-For this second exercise you are going to build a "Secure Web Server" application. "Secure" in this context refers to an application that runs on a remote server and where the end-user is unable to see the source code or (more importantly) the configuration the application uses to support authentication. This is in contrast to a client-side application which runs in the browser where the user can "view source" at any time.
-
-Secure web server applications allow the storing of **secrets** aka passwords in configuration files or environment variables which can be used to obtain access tokens which are then used to access backend APIs.
-
-### Part 1 - A Visual Studio C# application.
-https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-aspnet-core-web-api
 
 
-### Part 2 - A Visual Studio Code Node.js application.
-XXXXXXXXXXXXX
+### Part 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
 
 
@@ -707,59 +716,3 @@ https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-ne
 
 ### Part 2 - Node.js Application
 https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-console
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Exercise 6 - Resource Owner Credential Flow
-XXXXXXXXXXXXX
-
-### Part 1 - A Visual Studio C# application.
-XXXXXXXXXXXXX
-
-### Part 2 - Node.js Application
-XXXXXXXXXXXXX
-
-
-
-
-
-
-# TODO - If time.
-
-
-* Aquire token silently.
-
-
-
-###########################################################
-###########################################################
-###########################################################
-###########################################################
-
-# Which version of node do you have installed?
-node -v
-
-# You can install different version of node.js on a machine, e.g.
-nvm install v0.10.31 
-
-# Switch to using a specific installed version, e.g.
-nvm use v16.11.1 
-
-
-#npm install express # backend framework for node.js
-
-docker run -d -p 8080:8080   --name keycloak -e KEYCLOAK_USER=admin                   -e KEYCLOAK_PASSWORD=admin                       quay.io/keycloak/keycloak:15.0.2
-docker run -d -p 27017:27017 --name mongodb  -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=mongoadminpassword mongo
-
