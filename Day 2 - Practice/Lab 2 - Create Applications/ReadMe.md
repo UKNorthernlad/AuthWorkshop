@@ -653,103 +653,38 @@ response_types: ['code'],
 >
 > The `/callback` page will then print out the Code and Claims from inside the ID Token. Just as before we save the information inside a session cookie and the application will perform exactly as it did previously.
 
-### TODO - Task 6 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC PKCE Flow.
-
-TODO - https://developers.onelogin.com/openid-connect/guides/auth-flow-pkce
-
-
 ## Exercise 2 - Confidential Client Application that uses a backend API
-The next logical step is to build an application that runs on a server but needs to talk to a remove API in the context of the logged-on user. To do this you need to make two key changes to your application:
+The next logical step is to build an application that runs on a server but needs to talk to a remote API in the context of the logged-on user. To do this you need to make two key changes to your application:
 
 1. Define the backend API as its own unique client application in KeyCloak.
-2. Inform KeyCloak that the FrontEnd application (myfirstapp) will need to call the BackEnd API (backendAPI).
-2. Configure KeyCloak to issue an `Access Token` alongside the `ID Token` when somebody tries to use the FrontEnd application. The application running on the server will then use the Access Token to make calls to the remote API.
+2. Configure KeyCloak to understand that the FrontEnd application (myfirstapp) and the BackEnd API (backendAPI) are related and when users login to the FrontEnd application, they are prompted to consent to an access token being issued for the BackEnd API.
 
 ### Task 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Exercise 3 - Advanced WebServer Application that uses custom backend API scopes.
-For this third ......
-
-### Task 1 - A Visual Studio C# application.
-XXXXXXXXXXXXX
-
-### Task 2 - User Scopes v Application Scopes
-XXXXXXXXXXXXX
-
-### Task 3 - A Visual Studio Code Node.js application.
-XXXXXXXXXXXXX
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Exercise 4 - Single Page Web Applications
+## Exercise 3 - Single Page Web Applications
 In this 4th exercise you will create a typical **Single Page Application** which will pull data from an backend API. Whilst this may appear to be similar to Exercise 2 there is one important difference. This application is unable to securely store a "secret" (as the user could view the source code at any time) therefore a different "flow" must be used to obtain the id/access token.
 
-https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-desktop
+### Task 1 - Node.js Application, MSAL & AAD
+Microsoft already has an suitable quickstart lab for this case.
 
+1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-desktop and follow the instructions, returning here afterwards.
 
+### Task 2 - Node.js Application & KeyCloak
+Microsoft already has an suitable quickstart lab for this case.
 
+1. XXXXXXXX
 
+## Exercise 4 - Background Services/Daemon Applications.
+All the applications seen to far have had one thing in common - they all presented interactive login screens because the needed to support a real person performing the authentication.
 
+From time to time you may need to create a background service or application that runs on a scheduled basis and connects to a remote service such as an API. OIDC supports this via the use of a `Client Credential Flow`. By registering a new client application and enabling it with a secret (as you did in a previous task) you are really providing credentials for a service/daemon type application to connect to the IdP. Note as there is no user present, the only permissions present are those which are assigned to the application.
 
+### Task 1 - Node.js Application
+Microsoft already has an suitable quickstart lab for this case.
 
+1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-console and follow the instructions, returning here afterwards.
 
+### Optional - Task 2 - A Visual Studio C# application.
+Microsoft already has an suitable quickstart lab for this case.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Exercise 5 - Background Services/Daemon Applications.
-XXXXXXXXXXXXX
-
-### Task 1 - A Visual Studio C# application.
-https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-netcore-daemon
-
-### Task 2 - Node.js Application
-https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-console
+2. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-netcore-daemon and follow the instructions, returning here afterwards.
