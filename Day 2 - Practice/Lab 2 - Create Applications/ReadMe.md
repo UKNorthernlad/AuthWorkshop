@@ -654,10 +654,11 @@ response_types: ['code'],
 > The `/callback` page will then print out the Code and Claims from inside the ID Token. Just as before we save the information inside a session cookie and the application will perform exactly as it did previously.
 
 ## Exercise 2 - Confidential Client Application that uses a backend API
-The next logical step is to build an application that runs on a server but needs to talk to a remote API in the context of the logged-on user. To do this you need to make two key changes to your application:
+The next logical step is to build an application that runs on a server but needs to talk to a remote API in the context of the logged-on user. To do this you need to make two key changes:
 
 1. Define the backend API as its own unique client application in KeyCloak.
 2. Configure KeyCloak to understand that the FrontEnd application (myfirstapp) and the BackEnd API (backendAPI) are related and when users login to the FrontEnd application, they are prompted to consent to an access token being issued for the BackEnd API.
+3. Configure the BackEnd API application to trust access tokens issued by KeyCloak and to check tokens contain a valid `scope`.
 
 ### Task 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
@@ -697,3 +698,10 @@ Microsoft already has an suitable quickstart lab for this case.
 Microsoft already has an suitable quickstart lab for this case.
 
 3. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-netcore-daemon and follow the instructions, returning here afterwards.
+
+## Exercise 4 - Node.js Express Open ID Connect Middlewear
+
+### Task 1 - Explore the use of Express specific middlewear
+XXXXX
+
+1. https://www.npmjs.com/package/express-openid-connect

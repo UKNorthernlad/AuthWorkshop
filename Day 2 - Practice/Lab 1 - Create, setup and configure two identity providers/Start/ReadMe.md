@@ -96,8 +96,7 @@ You will need an **outlook.com** email address to complete this part of the lab.
 
 This concludes the creation of the Azure AD tenent. You will in a later lab come back and configure it further.
 
-
-## Part 2 - Setup & configure KeyCloak IdP
+### Setup & configure KeyCloak IdP
 
 This section will setup an on-premises identity provider running inside a Docker container. On-prem IdPs are commonly used when the applications that rely on them are located on closed networks without internet access or when you have other reasons for not wanting to use a cloud provider.
 

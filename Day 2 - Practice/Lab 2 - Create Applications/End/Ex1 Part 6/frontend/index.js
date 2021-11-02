@@ -2,6 +2,8 @@
 var express = require('express');
 var app = express();
 
+var apiCall = require('./apicall');
+
 // Utilities
 const util = require('util');
 
@@ -40,7 +42,7 @@ app.use(
         secret: "somekey",
         resave: false,
         saveUninitialized: false,
-        store: store, // Save the session data in the mongoDB. Default it in memory on webserver
+        //store: store, // Save the session data in the mongoDB. Default it in memory on webserver
     })
 );
 
@@ -120,8 +122,12 @@ app.get ('/login', (request, response) => {
 
 // The SecretPage. You can only see this if you are authenticated. Access controlled via middlewear.
 app.get ('/secretpage',  (request, response) => {
-    response.type('html');
-    response.send('<h1>The Secret Page</h1><a href="/">Back to Homepage</a>');
+
+    apiCall.performRequest('localhost','8082','/api/tasks','GET',request.session.tokenSet.access_token,{},function(data){
+        console.log('Got: ' + data);
+        response.type('html');
+        response.send('<h1>The Secret Page which calls the API</h1><h2>Returned data</h2><pre>' + data + '</pre>    <a href="/">Back to Homepage</a>');
+    });
 })
 
 // Callback handler. This page receives the token from KeyCloak IdP via the POST body, confirms it's legit, extracts the claims and sets values in the session cookie.
@@ -139,6 +145,9 @@ app.get ('/callback', (request, response) => {
 
         // Set userName session variable. Will be read back on subsequent pages.
         request.session.userName = tokenClaims.email;
+
+        // Save the TokenSet in the sesson object
+        request.session.tokenSet = tokenSet;
 
         // Extract and set session variables for any other claims from the token as you'll not see it again.
         // Typically you'd extract the unique identifier for the user (e.g. a UUID/GUID) or other unique name.
@@ -162,7 +171,7 @@ app.get ('/callback', (request, response) => {
         var idtoken = '<h1>ID Token</h1><p>' + result.id_token + '</p><p><a target="id_token" href="http://jwt.ms/#id_token=' + result.id_token + '">Click here to decode token</a></p>';
         var accesstoken = '<h1>Access Token</h1><p>' + result.access_token + '</p> <p><a target="access_token" href="http://jwt.ms/#access_token=' + result.access_token + '">Click here to decode token</a></p>';
 
-        response.send('<html>' + code + idtoken + accesstoken + '<a href="/">Return to Homepage</a></html>');
+        response.send('<html>' + code + idtoken + accesstoken + '<h1><a href="/secretpage">Call the API from the SecretPage</a></h1>  <a href="/">Return to Homepage</a></html>');
       }).catch(err => {
           console.log(err);
       });
