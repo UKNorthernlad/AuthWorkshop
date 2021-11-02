@@ -31,7 +31,7 @@ mongoose.connect(mongoURI, {useNewUrlParser: true,useUnifiedTopology: true,})
 // Define Collection name
 var store = new MongoDBSession({
     uri : mongoURI,
-     collection : "mySessions",
+    collection : "mySessions",
 });
 
 // Middlewear to read session cookie on each request

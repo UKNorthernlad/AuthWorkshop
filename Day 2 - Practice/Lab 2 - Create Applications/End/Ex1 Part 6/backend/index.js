@@ -18,21 +18,21 @@ var {generators} = require('openid-client');
 var session = require('express-session');
 const { send } = require('process');
 
-// MongoDB to store Session data
-const mongoURI = "mongodb://mongoadmin:mongoadminpassword@127.0.0.1:27017/sessions?authSource=admin";
-var mongoose = require('mongoose');
-var MongoDBSession = require('connect-mongodb-session')(session);
+// // MongoDB to store Session data
+// const mongoURI = "mongodb://mongoadmin:mongoadminpassword@127.0.0.1:27017/sessions?authSource=admin";
+// var mongoose = require('mongoose');
+// var MongoDBSession = require('connect-mongodb-session')(session);
 
-// Connect
-mongoose.connect(mongoURI, {useNewUrlParser: true,useUnifiedTopology: true,})
-.then(res => { console.log("MongoDB Connected.");})
-.catch( err => {console.log(`MongoDB Connect Error ====> ${err}`);});
+// // Connect
+// mongoose.connect(mongoURI, {useNewUrlParser: true,useUnifiedTopology: true,})
+// .then(res => { console.log("MongoDB Connected.");})
+// .catch( err => {console.log(`MongoDB Connect Error ====> ${err}`);});
 
-// Define Collection name
-var store = new MongoDBSession({
-    uri : mongoURI,
-     collection : "mySessions",
-});
+// // Define Collection name
+// var store = new MongoDBSession({
+//     uri : mongoURI,
+//     collection : "mySessions",
+// });
 
 // Middlewear to read session cookie on each request
 app.use(
@@ -40,7 +40,7 @@ app.use(
         secret: "somekey",
         resave: false,
         saveUninitialized: false,
-        store: store, // Save the session data in the mongoDB. Default it in memory on webserver
+        //store: store, // Save the session data in the mongoDB. Default it in memory on webserver
     })
 );
 
