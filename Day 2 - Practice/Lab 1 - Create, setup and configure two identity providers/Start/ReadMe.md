@@ -33,7 +33,7 @@ Follow these steps to setup your machine:
 
 Invoke-Item "$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe"
 ```
-2. From the PS console type `restart-computer` to **Reboot** your VM.
+2. When install completes, press the blue button to restart your machine.
 3. Connect to your VM using RDP and logon with the supplied admin credentials.
 4. Open a PowerShell (PS) prompt.
 5. Type `Invoke-Item 'C:\Program Files\Docker\Docker\Docker Desktop.exe'` to start **Docker Desktop** - *Ignore warnings about depricated versions of Windows or failing to start Docker*.
