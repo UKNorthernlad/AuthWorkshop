@@ -37,6 +37,7 @@ Invoke-Item "$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe"
 3. Connect to your VM using RDP and logon with the supplied admin credentials.
 4. Open a PowerShell (PS) prompt.
 5. Type `Invoke-Item 'C:\Program Files\Docker\Docker\Docker Desktop.exe'` to start **Docker Desktop** - *Ignore warnings about depricated versions of Windows or failing to start Docker*.
+6. Accept the Licence Agreement and press `Install`.
 
 ### Other Configs
 
