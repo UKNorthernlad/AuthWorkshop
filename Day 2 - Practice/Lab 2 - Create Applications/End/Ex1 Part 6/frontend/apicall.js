@@ -29,7 +29,7 @@ function performRequest(host, port, endpoint, method, accesstoken, data, success
   
     var req = http.request(options, function(res) {
         
-        //console.log(`statusCode: ${res.statusCode}`);
+        console.log(`statusCode: ${res.statusCode}`);
 
         res.setEncoding('utf-8');
   

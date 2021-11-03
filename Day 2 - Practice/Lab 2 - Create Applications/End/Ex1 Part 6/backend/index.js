@@ -55,29 +55,37 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
         request.isTokenValid = false;
 
         //Validate the token. This doesn't work yet - there's a prize if you can fix it.
-        if(access_token){ // There is a token present in the request
-               console.log(access_token);    
+        if(access_token){ // There is *some* Bearer value in the Authorization header.
+            console.log(access_token);   
+
             //Perform work to validate the token for real.
-            client.introspect(access_token, 'access_token').then((result,err) => {
-             if(result.active === false){ // Invalid token
-                    console.log("Token not active - probably means it's not valid or has expired.");    
-                } else {
-                    console.log('Valid Token.');
+            let result = client.introspect(access_token, 'requesting_party_token');
+            //let result = client.introspect(access_token, 'access_token'); // Seems to return validated ID Token.
+            
+            result.then((result,err) => {
+             if (err) return console.error(`Introspect error = ${err}`);
+
+             if(result.active === true){ // Valid token
+                console.log('Valid Token.');
                     console.log(JSON.stringify(result));
                     
                     // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
-                    request.isTokenValid = true;
+                    return request.isTokenValid = true;
 
                     // // TODO PROPERLY- Check the claims contain the right scope to call this API
                     // if(true) {  // simulate claim missing
                     //     //response.status(403).send('Not authorised - Required Scope is missing');
-                    // } 
+                    // }
+                } else {
+                    console.log("Token not active - probably means it's not valid or has expired.");           
                 }
             }).catch( err => {
                 console.log(`Token Intospection Error - ${err}`);
                 throw err;
             });
-        } 
+        } else {
+            request.isTokenValid = false;
+        }
 
         next();
     });
@@ -110,7 +118,7 @@ app.get ('/api/tasks', auth, (request, response) => {
         console.log("BAD BAD BAD");
         var data = ['Bad Token'];
         response.type('application/json');
-        response.status(200);
+        response.status(403);
         response.send(data);
     }
 });
