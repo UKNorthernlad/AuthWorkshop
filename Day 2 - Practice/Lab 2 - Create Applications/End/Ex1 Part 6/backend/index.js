@@ -69,13 +69,21 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
                 console.log('Valid Token.');
                     console.log(JSON.stringify(result));
                     
-                    // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
-                    return request.isTokenValid = true;
-
-                    // // TODO PROPERLY- Check the claims contain the right scope to call this API
-                    // if(true) {  // simulate claim missing
-                    //     //response.status(403).send('Not authorised - Required Scope is missing');
+                    // // TODO - Check the token claims the right Audiance
+                    // if(true) {  
+                    //     //stuff
                     // }
+
+                    // // TODO - Check the token contains the right Scope to call this API
+                    // if(true) {  
+                    //     //stuff
+                    // }
+
+                                        // For Testing - Hard code to say the token is OK.
+                    // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
+                    request.isTokenValid = true;
+
+
                 } else {
                     console.log("Token not active - probably means it's not valid or has expired.");           
                 }
@@ -96,17 +104,12 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
 // Use the "auth" middlewear, i.e. process each request through it.
 //app.use(auth);
 
-
-
-
 //
 // Routing handlers for main pages
 //
 
 // Homepage
 app.get ('/api/tasks', auth, (request, response) => {
-
-    //request.isTokenValid = true;
 
     if(request.isTokenValid){
         console.log("VALID VALID VALID");

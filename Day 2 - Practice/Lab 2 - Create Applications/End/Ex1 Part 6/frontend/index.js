@@ -124,7 +124,7 @@ app.get ('/login', (request, response) => {
 app.get ('/secretpage',  (request, response) => {
 
     apiCall.performRequest('localhost','8082','/api/tasks','GET',request.session.tokenSet.access_token,{},function(data){
-        console.log('Got: ' + data);
+        console.log('API Call Got: ' + data);
         response.type('html');
         response.send('<h1>The Secret Page which calls the API</h1><h2>Returned data</h2><pre>' + data + '</pre>    <a href="/">Back to Homepage</a>');
     });

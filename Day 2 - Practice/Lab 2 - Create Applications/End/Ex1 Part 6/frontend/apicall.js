@@ -29,7 +29,7 @@ function performRequest(host, port, endpoint, method, accesstoken, data, success
   
     var req = http.request(options, function(res) {
         
-        console.log(`statusCode: ${res.statusCode}`);
+        console.log(`API Call statusCode: ${res.statusCode}`);
 
         res.setEncoding('utf-8');
   
@@ -40,7 +40,7 @@ function performRequest(host, port, endpoint, method, accesstoken, data, success
         });
   
         res.on('end', function() {
-            console.log("responseString = " + responseString);
+            console.log("API Call responseString = " + responseString);
             //var responseObject = JSON.parse(responseString);
             //success(responseObject);
             success(responseString);
