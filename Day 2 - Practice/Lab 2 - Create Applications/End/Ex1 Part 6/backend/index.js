@@ -54,7 +54,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
         // Assume Access Token is bad until we complete the code to validate it.
         request.isTokenValid = false;
 
-        //Validate the token. This doesn't work yet - there's a prize if you can fix it.
+        //Validate the token.
         if(access_token){ // There is *some* Bearer value in the Authorization header.
             console.log(access_token);   
 
@@ -84,12 +84,14 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
                     // }
 
                     // For Testing - Hard code to say the token is OK.
-                    // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
                     request.isTokenValid = true;
+
                     next();
 
                 } else {
-                    console.log("Token not active - probably means it's not valid or has expired.");           
+
+                    console.log("Token not active - probably means it's not valid or has expired.");  
+                    next();         
                 }
             }).catch( err => {
                 console.log(`Token Intospection Error - ${err}`);
