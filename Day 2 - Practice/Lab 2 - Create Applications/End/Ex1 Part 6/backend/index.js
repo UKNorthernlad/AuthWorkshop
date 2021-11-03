@@ -79,7 +79,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
                     //     //stuff
                     // }
 
-                                        // For Testing - Hard code to say the token is OK.
+                    // For Testing - Hard code to say the token is OK.
                     // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
                     request.isTokenValid = true;
 
