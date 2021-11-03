@@ -23,7 +23,7 @@ Follow these steps to setup your machine:
 ```
 (New-Object System.Net.WebClient).DownloadFile("https://authstore100.blob.core.windows.net/software/vs_community.exe","$env:USERPROFILE\Downloads\vs_community.exe")
 
-$env:USERPROFILE\Downloads\vs_community.exe --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetCoreTools --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended
+& "$env:USERPROFILE\Downloads\vs_community.exe" --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetCoreTools --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended
 ```
 ### Docker Desktop
 
@@ -33,10 +33,11 @@ $env:USERPROFILE\Downloads\vs_community.exe --add Microsoft.VisualStudio.Workloa
 
 Invoke-Item "$env:USERPROFILE\Downloads\DockerDesktopInstaller.exe"
 ```
-2. From the PS console type `restart-computer` to **Reboot** your VM.
+2. When install completes, press the blue button to restart your machine.
 3. Connect to your VM using RDP and logon with the supplied admin credentials.
 4. Open a PowerShell (PS) prompt.
 5. Type `Invoke-Item 'C:\Program Files\Docker\Docker\Docker Desktop.exe'` to start **Docker Desktop** - *Ignore warnings about depricated versions of Windows or failing to start Docker*.
+6. Accept the Licence Agreement and press `Install`.
 
 ### Other Configs
 
