@@ -86,6 +86,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
                     // For Testing - Hard code to say the token is OK.
                     // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
                     request.isTokenValid = true;
+                    next();
 
                 } else {
                     console.log("Token not active - probably means it's not valid or has expired.");           
@@ -96,9 +97,10 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
             });
         } else {
             request.isTokenValid = false;
+            next();
         }
 
-        next();
+        //next();
     });
      
  };
