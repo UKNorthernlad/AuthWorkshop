@@ -34,10 +34,10 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
     //console.log('Metadata %O', keyCloakIssuer.metadata);
 
     client = new keyCloakIssuer.Client({
-        client_id: 'myfirstapp',
-        client_secret: 'ad671d3a-4e56-44d5-b750-74bd8949936e',
-        redirect_uris: ['http://localhost:8081/callback'],
-        response_types: ['code'],
+        client_id: 'backendAPI',
+        client_secret: 'b30a199b-2b95-4b68-982f-2f1ac02ad02a',
+        //redirect_uris: ['http://localhost:8081/callback'],
+        //response_types: ['code'],
         // id_token_signed_response_alg (default "RS256")
       }); // => Client
 
@@ -68,6 +68,10 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
              if(result.active === true){ // Valid token
                 console.log('Valid Token.');
                     console.log(JSON.stringify(result));
+                    
+                    // Perform Authorization - It's a legigitmate token, but do we want to allow it?
+                    //
+                    //
                     
                     // // TODO - Check the token claims the right Audiance
                     // if(true) {  
