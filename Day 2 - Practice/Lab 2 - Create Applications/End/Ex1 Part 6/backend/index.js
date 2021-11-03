@@ -73,7 +73,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
                     //
                     //
                     
-                    // // TODO - Check the token claims the right Audiance
+                    // // TODO - Check the token claims the right Audience
                     // if(true) {  
                     //     //stuff
                     // }
