@@ -23,7 +23,7 @@ Follow these steps to setup your machine:
 ```
 (New-Object System.Net.WebClient).DownloadFile("https://authstore100.blob.core.windows.net/software/vs_community.exe","$env:USERPROFILE\Downloads\vs_community.exe")
 
-$env:USERPROFILE\Downloads\vs_community.exe --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetCoreTools --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended
+& "$env:USERPROFILE\Downloads\vs_community.exe" --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetCoreTools --add Microsoft.VisualStudio.Workload.NetWeb --includeRecommended
 ```
 ### Docker Desktop
 
