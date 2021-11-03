@@ -54,27 +54,30 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
         // Assume Access Token is bad until we complete the code to validate it.
         request.isTokenValid = false;
 
-        // Validate the token. This doesn't work yet - there's a prize if you can fix it.
-        // if(access_token){ // There is a token present in the request
-        //        console.log(access_token);    
-        //     //Perform work to validate the token for real.
-        //     client.introspect(access_token, 'access_token').then((result,err) => {
-        //      if(result.active === false){ // Invalid token
-        //             console.log("Token not active - probably means it's not valid or has expired.");    
-        //         } else {
-        //             console.log('Valid Token.');
-        //             console.log(JSON.stringify(result));
-        //             response.isTokenValid = true;
-        //             // // TODO PROPERLY- Check the claims contain the right scope to call this API
-        //             // if(true) {  // simulate claim missing
-        //             //     //response.status(403).send('Not authorised - Required Scope is missing');
-        //             // } 
-        //         }
-        //     }).catch( err => {
-        //         console.log(`Token Intospection Error - ${err}`);
-        //         throw err;
-        //     });
-        // } 
+        //Validate the token. This doesn't work yet - there's a prize if you can fix it.
+        if(access_token){ // There is a token present in the request
+               console.log(access_token);    
+            //Perform work to validate the token for real.
+            client.introspect(access_token, 'access_token').then((result,err) => {
+             if(result.active === false){ // Invalid token
+                    console.log("Token not active - probably means it's not valid or has expired.");    
+                } else {
+                    console.log('Valid Token.');
+                    console.log(JSON.stringify(result));
+                    
+                    // BUG HERE - WHY WON'T THIS UPDATE? Think it's got something to do with updating on a .then handler.
+                    request.isTokenValid = true;
+
+                    // // TODO PROPERLY- Check the claims contain the right scope to call this API
+                    // if(true) {  // simulate claim missing
+                    //     //response.status(403).send('Not authorised - Required Scope is missing');
+                    // } 
+                }
+            }).catch( err => {
+                console.log(`Token Intospection Error - ${err}`);
+                throw err;
+            });
+        } 
 
         next();
     });
