@@ -3,22 +3,22 @@ var http = require('http');
 const { prototype } = require('events');
 
 function performRequest(host, port, endpoint, method, accesstoken, data, success) {
-    var dataString = JSON.stringify(data);
+    //var dataString = JSON.stringify(data);
     var headers = {};
     
     if (method == 'GET') {
-      endpoint += '?' + querystring.stringify(data);
+      //endpoint += '?' + querystring.stringify(data);
       headers = {
         'Authorization' : 'bearer ' + accesstoken,
       };
     }
-    else {
-      headers = {
-        'Content-Type': 'application/json',
-        'Content-Length': dataString.length,
-        'Authorization' : 'bearer ' + accesstoken,
-      };
-    }
+    // else {
+    //   headers = {
+    //     'Content-Type': 'application/json',
+    //     'Content-Length': dataString.length,
+    //     'Authorization' : 'bearer ' + accesstoken,
+    //   };
+    //}
     var options = {
       host: host,
       port: port,
@@ -47,7 +47,7 @@ function performRequest(host, port, endpoint, method, accesstoken, data, success
         });
     });
   
-    req.write(dataString);
+    //req.write(dataString);
     req.end();
 }
 
