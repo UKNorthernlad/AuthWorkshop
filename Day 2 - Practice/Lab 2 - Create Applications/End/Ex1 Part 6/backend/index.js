@@ -100,6 +100,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
             next();
         }
 
+        //request.isTokenValid = false;
         //next();
     });
      
