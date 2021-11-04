@@ -12,8 +12,24 @@ The next logical step is to build an application that runs on a server but needs
 ### Task 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
 #### Configuring KeyCloak
+Now let's configure the BackEnd application in KeyCloak. You are going to configure an application with a `secret` just as you did in the Authorization Code task previously. These credentials can then by used by the Node.js application which implements the backend to connect to KeyCloak and verify its tokens.
 
-1. XXXX
+1. Login to KeyCloak admin console at http://localhost:8080/auth/ as the admin user and ensure the Realm is set to myrelam (top left hand side of the screen).
+1. Click clients in the menu, then on the far right of the screen, click Create.
+1. Set ClientId to `backendapi`.
+> You will later configure this value into the backend application code.
+1. Set Root URL to http://localhost:8082.
+1. Press *Save* to return to the Settings tab.
+1. Select the Credentials tab at the top of the page and make a copy of the *Secret* assigned to the client application (it will be a GUID).
+> You will later configure this value into the backend application code.
+1. Press Save at the bottom of the screen.
+
+You will also make another change such that when a user tries to login to the FrontEnd appliction (myfirstapp) that KeyCloak also issues an `access_token` in their name. The FrontEnd will use this token to access the BackEnd API.
+
+TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-
+1. Click *clients* in the left hand menu, then from the list of client choose *myfirstapp*.
+1. Set `Consent Required` to **ON**.
+1. XXXXXX
 
 #### Building/Configuring the applications - FrontEnd Application
 
