@@ -604,7 +604,7 @@ request.session.destroy((err) => {
 });
 ```
 
-### Task 5 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Authorisation Code Flow.
+### Task 5 - A Node.js application which uses KeyCloak IdP, OpenId-Client and the OIDC Authorization Code Flow.
 Open ID Connect has a number of different ways to obtain an ID and/or Access Token. In Task 4 above you used the `Implicit Flow` (sometimes called *Public Flow*) where the full ID Token is returned from KeyCloak as an HTML page with the token in a hidden field on a form. The browser then automatically performs an HTTP POST of the data to the /callback endpoint from where the token is extracted.
 
 The downside of this is that the client browser can read all the data in the form. But what if you don't want the user to see the token as it flows through their machine? Perhaps it contains data you would rather they did not see, e.g. a credit score?
@@ -663,6 +663,16 @@ The next logical step is to build an application that runs on a server but needs
 ### Task 1 - A Node.js application that uses KeyCloak and talks to a backend API.
 
 1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
+1. XXXXX
 
 ## Exercise 3 - Single Page Web Applications
 In this 4th exercise you will create a typical **Single Page Application** which will pull data from an backend API. Whilst this may appear to be similar to Exercise 2 there is one important difference. This application is unable to securely store a "secret" (as the user could view the source code at any time) therefore a different "flow" must be used to obtain the id/access token.
@@ -672,22 +682,18 @@ Microsoft already has an suitable quickstart lab for this case.
 
 1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-nodejs-desktop and follow the instructions, returning here afterwards.
 
-### Task 2 - Node.js Application & KeyCloak
-Microsoft already has an suitable quickstart lab for this case.
+### Task 2 (TODO) - Node.js Application & KeyCloak
 
-1. XXXXXXXX
+1. Not yet available
 
 ## Exercise 4 - Background Services/Daemon Applications.
 All the applications seen to far have had one thing in common - they all presented interactive login screens because the needed to support a real person performing the authentication.
 
 From time to time you may need to create a background service or application that runs on a scheduled basis and connects to a remote service such as an API. OIDC supports this via the use of a `Client Credential Flow`. By registering a new client application and enabling it with a secret (as you did in a previous task) you are really providing credentials for a service/daemon type application to connect to the IdP. Note as there is no user present, the only permissions present are those which are assigned to the application.
 
-### Task 1 - Node.js Application with KeyCloak
+### Task 1 (TODO) - Node.js Application with KeyCloak
 
-TODO
-XXX
-
-https://developers.redhat.com/blog/2020/01/29/api-login-and-jwt-token-generation-using-keycloak#
+1. Not yet available.
 
 ### Optional - Task 2 - Node.js Application with AAD.
 Microsoft already has an suitable quickstart lab for this case.
@@ -698,10 +704,3 @@ Microsoft already has an suitable quickstart lab for this case.
 Microsoft already has an suitable quickstart lab for this case.
 
 3. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-netcore-daemon and follow the instructions, returning here afterwards.
-
-## Exercise 4 - Node.js Express Open ID Connect Middlewear
-
-### Task 1 - Explore the use of Express specific middlewear
-XXXXX
-
-1. https://www.npmjs.com/package/express-openid-connect
