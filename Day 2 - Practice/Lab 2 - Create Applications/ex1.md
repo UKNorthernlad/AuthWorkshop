@@ -480,7 +480,7 @@ app.post ('/callback', urlEncodedParser, (request, response) => {
 27. Press the `Return to Homepage` link to get back to the beginning. Notice this time that an email address should be displayed under the main H1 title block.
 
 28. Open your browser's *Developer Tools* and on the **Application** tab, under *Storage*->*Cookies* notice you now have a new cookie called `connect.sid`.
-> If you delete this cookie and relate the homepage, you'll notice the email address changes back to `Unauthenticated`. Pressing `Login` again will fix the issue.
+> If you delete this cookie and reload the homepage, you'll notice the email address changes back to `Unauthenticated`. Pressing `Login` again will fix the issue.
 
 Once a user is logged-in, it is possible to use some unique & immutable piece of data from their token as the key for storing data in other systems. The next time they login, the token will contain this same unique data point which is critical if data retreival is to take place.
 
