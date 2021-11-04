@@ -17,7 +17,8 @@ This sample uses the *Implicit* flow (response_type=id_token) and is perfect for
 >  2. /StartUp.cs  ---- Comment out line 41.
 
 1. Browse to https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-aspnet-core-webapp and follow the instructions. Upon completion of that excersise, return here.
-2. Review the code, especially the lines you commened out above. Add them back in and run the application again. What's the difference this time?
+> Once you have downloaded and extracted the code, you will need to double-click on the `WebApp-OpenIDConnect-DotNet.sln` file to open the project in Visual Studio.
+3. Review the code, especially the lines you commened out above. Add them back in and run the application again. What's the difference this time?
 
 ### Task 2 - A Visual Studio Code Node.js application using AAD & MSAL for Node.
 This is pretty much the same exercise as previous but instead you will be using Node.js, AAD and MSAL for Node.js. The only difference is that this time the application is using the *authorization* code flow which means that AAD doesn't produce a full JWT ID token, but instead only a special *authorization code* which it gives to the browser - it then hands that to the Node.js application. This in turn uses its own special *secret* password AND the auth code to speak directly to AAD to obtain the JWT. The upshot of this is that the ID JWT token is never given directly to the browser and the user can't read its contents.
