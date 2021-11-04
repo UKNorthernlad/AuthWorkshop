@@ -587,7 +587,7 @@ app.use(
 ```
 request.session.destroy((err) => {
    if(err) throw err;
-   request.redirect('/');
+   response.redirect('/');
 });
 ```
 
