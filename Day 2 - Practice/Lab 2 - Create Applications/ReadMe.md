@@ -19,5 +19,5 @@ See https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-overview 
 
 * [Exercise 1 - Simple WebServer based app with user authentication](ex1.md)
 * [Exercise 2 - Confidential Client Application that uses a backend API](ex2.md)
-* [Exercise 3 - Single Page Web Applications ](ex1.md)
-* [Exercise 4 - Background Services/Daemon Applications.](ex1.md)
+* [Exercise 3 - Single Page Web Applications ](ex3.md)
+* [Exercise 4 - Background Services/Daemon Applications.](ex4.md)
