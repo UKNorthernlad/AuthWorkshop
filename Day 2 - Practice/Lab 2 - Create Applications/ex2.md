@@ -23,7 +23,7 @@ Now let's configure the BackEnd application in KeyCloak. You are going to config
 
 4. Set Root URL to http://localhost:8082.
 
-5. Press *Save* to return to the Settings tab, the change the `Access Type` drop down to **bearer-only**, the press *Save* at the bottom of the page.
+5. Press *Save* to return to the Settings tab, then change the `Access Type` drop down to **bearer-only**, the press *Save* at the bottom of the page.
 
 6. Select the Credentials tab at the top of the page and make a copy of the *Secret* assigned to the client application (it will be a GUID).
 > You will later configure this value into the backend application code.
