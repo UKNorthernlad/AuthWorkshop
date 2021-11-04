@@ -29,7 +29,10 @@ You will also make another change such that when a user tries to login to the Fr
 TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-
 1. Click *clients* in the left hand menu, then from the list of client choose *myfirstapp*.
 1. Set `Consent Required` to **ON**.
-1. XXXXXX
+1. Click *Client Scopes* in the left hand menu, then it the top right hand side, click `Create`,
+1. Name the new scope *ReadTaskData* & press **Save**.
+1. Now go back into the `backendAPI` client application and click on `Client Scopes` at the top of the page.
+1. Add the new `ReadTaskData` scope to the list of *Assigned Default Client Scopes*.
 
 #### Building/Configuring the applications - FrontEnd Application
 
