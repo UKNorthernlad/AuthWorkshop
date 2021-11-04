@@ -26,7 +26,6 @@ Now let's configure the BackEnd application in KeyCloak. You are going to config
 
 You will also make another change such that when a user tries to login to the FrontEnd appliction (myfirstapp) that KeyCloak also issues an `access_token` in their name. The FrontEnd will use this token to access the BackEnd API.
 
-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-TODO-
 1. Click *clients* in the left hand menu, then from the list of client choose *myfirstapp*.
 1. Set `Consent Required` to **ON**.
 1. Click *Client Scopes* in the left hand menu, then it the top right hand side, click `Create`,
