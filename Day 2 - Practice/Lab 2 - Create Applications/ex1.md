@@ -12,7 +12,7 @@ The sample application makes use of the *Microsoft Authentication Library* (MSAL
 
 This sample uses the *Implicit* flow (response_type=id_token) and is perfect for simply authenticating your end-users, assuming the only job you want done is authenticating the user and then relying on your own session mechanism with no need for accessing any third party APIs with an Access Token from the Authorization Server.
 
-> The sample you download contains two lines of code which automatically force you to sign-in once you run the application. To help understand the OIDC process, it's recommended that you make a couple of changes to the application before you run it for the first time.
+> The sample you are about to download contains two lines of code which automatically force you to sign-in once you run the application. To help understand the OIDC process, it's recommended that you make a couple of changes to the application before you run it for the first time.
 >  1. /Controllers/HomeController.cs   ----  Comment out line 13.
 >  2. /StartUp.cs  ---- Comment out line 41.
 
