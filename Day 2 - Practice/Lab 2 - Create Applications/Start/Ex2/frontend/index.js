@@ -58,7 +58,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
 
     client = new keyCloakIssuer.Client({
         client_id: 'myfirstapp',
-        client_secret: 'ad671d3a-4e56-44d5-b750-74bd8949936e',
+ //       client_secret: 'ad671d3a-4e56-44d5-b750-74bd8949936e',
         redirect_uris: ['http://localhost:8081/callback'],
 //        response_types: ['code'],
         // id_token_signed_response_alg (default "RS256")

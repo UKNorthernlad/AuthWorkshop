@@ -2,14 +2,14 @@ var querystring = require('querystring');
 var http = require('http');
 const { prototype } = require('events');
 
-function performRequest(host, port, endpoint, method, accesstoken, data, success) {
+// function performRequest(host, port, endpoint, method, accesstoken, data, success) {
     //var dataString = JSON.stringify(data);
     var headers = {};
     
     if (method == 'GET') {
       //endpoint += '?' + querystring.stringify(data);
       headers = {
-        'Authorization' : 'bearer ' + accesstoken,
+//        'Authorization' : 'bearer ' + accesstoken,
       };
     }
     // else {
