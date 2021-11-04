@@ -35,7 +35,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
 
     client = new keyCloakIssuer.Client({
         client_id: 'backendAPI',
-        client_secret: 'b30a199b-2b95-4b68-982f-2f1ac02ad02a',
+        client_secret: 'db83949d-4380-4ceb-8402-15d0fec842ba',
         //redirect_uris: ['http://localhost:8081/callback'],
         //response_types: ['code'],
         // id_token_signed_response_alg (default "RS256")
