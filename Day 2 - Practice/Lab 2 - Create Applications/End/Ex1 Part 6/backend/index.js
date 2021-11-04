@@ -59,8 +59,8 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
             console.log(access_token);   
 
             //Perform work to validate the token for real.
-            let result = client.introspect(access_token, 'requesting_party_token');
-            //let result = client.introspect(access_token, 'access_token'); // Seems to return validated ID Token.
+            //let result = client.introspect(access_token, 'requesting_party_token');
+            let result = client.introspect(access_token, 'access_token'); // Seems to return validated ID Token.
             
             result.then((result,err) => {
              if (err) return console.error(`Introspect error = ${err}`);
