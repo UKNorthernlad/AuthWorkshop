@@ -32,6 +32,9 @@ You will also make another change such that when a user tries to login to the Fr
 1. Name the new scope *ReadTaskData* & press **Save**.
 1. Now go back into the `backendAPI` client application and click on `Client Scopes` at the top of the page.
 1. Add the new `ReadTaskData` scope to the list of *Assigned Default Client Scopes*.
+> The BackEndAPI will be looking out for an access_token that contains the *ReadTaskData* scope. This means that when the BackEnd API received the access_token, it contains a *claim* called *ReadTaskData*. This is the indicator that the user has consented to the FrontEnd application reading their data from the BackEnd API.
+>
+> Important: It is the responsibilty of the BackEnd API application code to read this information from the access_token AND ensure there is authorization code in place act accordingly if it is not.
 
 #### Building/Configuring the applications - FrontEnd Application
 
