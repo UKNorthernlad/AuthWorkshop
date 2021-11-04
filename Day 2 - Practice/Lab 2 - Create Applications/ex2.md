@@ -71,7 +71,7 @@ You will also make another change such that when a user tries to login to the Fr
 
 22. Review lines 171,172 (notice that the callback page now prints out the tokens for debugging purposes).
 
-23. Update line 62 with the `client secret` for the `myfirstapp`. This will be unqiue for each environment so don't rely on the value else you won't be able to redeem the Authorization code into ID & Access Tokens.
+23. Update line 61 with the `client secret` for the `myfirstapp`. This will be unqiue for each environment so don't rely on the value else you won't be able to redeem the Authorization code into ID & Access Tokens.
 
 24. Save the progress so far and run the application with `nodemon .`
 
