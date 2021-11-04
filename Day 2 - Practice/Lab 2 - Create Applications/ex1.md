@@ -410,9 +410,9 @@ var session = require('express-session');
 
      The *Session cookie*, normally called `connect.sid` in Express based Node.js applications needs to be extracted and any data inside it should be made available to the application.
      
-     Replace lines 36-44 with the code below to configure an Express middlewear.
+     Replace lines 36-44 with the code below to configure an Express middleware.
 ```
-// Middlewear to read session cookie on each request
+// Middleware to read session cookie on each request
 app.use(
     session({
         secret: "somekey",
@@ -490,13 +490,13 @@ You are now going to secure the `SecretPage` so that only authenticated users ca
 
 29. Replace lines 67-92 with the code below.
 
-    This is an Express middlewear component, which is designed to process incomming requests.
+    This is an Express middleware component, which is designed to process incomming requests.
     
     Line 78 is checking to see if the request if for `/secretpage`, if so it then checks the session cookie to get the `userName` value. If this exists, it means the user has already authenticated. If it is missing (meaning they have yet to login), it displays an error.
 
-    Finally in Line 92 the middlewear is activated and all incoming requests are routed through it.
+    Finally in Line 92 the middleware is activated and all incoming requests are routed through it.
 ```
-// Middlewear to log debugging information and protect the SecretPage.
+// Middleware to log debugging information and protect the SecretPage.
  const auth = (req, res, next) => {
     console.log(req.url);
     console.log(req.session);
@@ -520,7 +520,7 @@ You are now going to secure the `SecretPage` so that only authenticated users ca
      next();
  };
 
-// Use the "auth" middlewear, i.e. process each request through it.
+// Use the "auth" middleware, i.e. process each request through it.
 app.use(auth);
 ```
 
@@ -569,7 +569,7 @@ var store = new MongoDBSession({
 
     Your code should now look like this:
 ```
-// Middlewear to read session cookie on each request
+// Middleware to read session cookie on each request
 app.use(
     session({
         secret: "somekey",
