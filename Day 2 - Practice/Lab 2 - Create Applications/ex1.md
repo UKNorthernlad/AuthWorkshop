@@ -49,7 +49,7 @@ cd .\Day 2 - Practice\Lab 2 - Create Applications\Start\Ex1 Task 4
 
 code .
 ```
-2. npm install -g nodemon
+2. Run `npm install -g nodemon` to install the Node monitor tool, then run `npm install` to download all the required packages.
 
 3. Now run the application to see its current state:
 ```
@@ -109,6 +109,7 @@ Issuer.discover('http://localhost:8080/auth/realms/myrealm/')// => Promise
 > It can take several minutes for KeyCloak to startup inside the container - so be patient. When you see `**Admin console listening on http://127.0.0.1:9990**` at the bottom of the window from where you launched the container, you'll know it's up and running.
 > * If KeyCloak is not answering, try to create another Docker container as described at https://www.keycloak.org/getting-started/getting-started-docker.
 > *  Make sure you follow the part of the above setup guide to create a Realm called `myrealm` and also a user called `myuser` (remember that a *Realm* is the equivalent of an AAD Tenant).
+> You should also ensure that the *myuser* has an email address. This will be extracted into the ID Token and eventually displayed on the application homepage.
 > * Don't worry about following the part for creating a client, there are steps coming up shortly explaining what you need to do.
 
 11. View the output from your Nodemon console, you should see the metadata has been downloaded. The output should look similar to the following:
