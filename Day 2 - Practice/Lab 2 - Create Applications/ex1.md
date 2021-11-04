@@ -6,7 +6,7 @@ For this first exercise you are going to build a basic server-side web applicati
 Whilst the first few parts will use Azure AD (AAD), don't let this worry you too much. OIDC works the same whether using AAD, KeyCloak or any other 3rd party IdP product. The URLs used may be different and the way to configure the product might be done in code rather than through a UI but the aim here is to concentrate on OIDC and not the IdP being used.
 
 ### Task 1 - A Visual Studio C# application using AAD.
-Microsoft already has an suitable quickstart lab for this most basic case. It offers an *automatic* or *manual* option to configure the sample code and it's recommended that you use the **manual** option so that you get exposure to configuring all the required parts.
+Microsoft already has a suitable quickstart lab for this most basic case. It offers an *automatic* or *manual* option to configure the sample code and it's recommended that you use the **manual** option so that you get exposure to configuring all the required parts.
 
 The sample application makes use of the *Microsoft Authentication Library* (MSAL) which provides some important OIDC related features which perform tasks such as confirming JWT tokens are legitimate and have not been tampered with. This is the reason why you won't see any code which performs these sorts of checks.
 
