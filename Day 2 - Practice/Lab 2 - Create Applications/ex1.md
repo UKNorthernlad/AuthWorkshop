@@ -316,7 +316,7 @@ Metadata {
   }
 }
 ```
-If you see something similar to the error message below, there is a good change that nothing is listening on port 8080. In other words, your Docker container is not running correctly.
+If you see something similar to the error message below, there is a good chance that nothing is listening on port 8080. In other words, your Docker container is not running correctly.
 ```
 PS C:\temp\ex1Task4> node .
 node:internal/process/promises:246
