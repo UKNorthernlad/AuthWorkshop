@@ -85,17 +85,17 @@ This is the application which implements the backend API. It's really just a sim
 
 1. Review lines 39,40. Notice these are now commented out - leave them that way as this application won't be requesting new tokens (so doesn't need *redirect_uris* or *reponse_types*).
 
-1. Review line 120 - this is the actual API page handler which returns the data back to the Front End. Notice that it now has an "auth" middlewear to check for valid tokens (you will look at that next).
+1. Review line 120 - this is the actual API page handler which returns the data back to the Front End. Notice that it now has an "auth" middleware to check for valid tokens (you will look at that next).
 
 1. Review line 122. See how this uses the `request.isTokenValid` value to decide wether to return the actual data or some error code if the token was invalid. In a real application you would have pulled the data from a database or similar.
-> There is also an argument for returning an HTTP 401 error from the middlewear when the absense of an `authorization` header is detected or the access_token value is not valid. For the purposes of understanding the flow, it's been kept as simple as possible.
+> There is also an argument for returning an HTTP 401 error from the middleware when the absense of an `authorization` header is detected or the access_token value is not valid. For the purposes of understanding the flow, it's been kept as simple as possible.
 
-1. Uncomment lines 47 - 149. This is the middlewear which checks for the presence of an Authorization token & validates it.
+1. Uncomment lines 47 - 149. This is the middleware which checks for the presence of an Authorization token & validates it.
 > Some authentication libaries such as MSAL can validate the digital signature on the token locally because they downloaded the public key from the IdP when the application started up. Once done they can check the token is in date, that its really for them and not some other application. This is done by checking the `aud` audience claim in the token.
 >
 > The `openid-client` npm package used in this application doesn't have this feature (although there is nothing to stop you from writing something because the public key is avaialble from KeyCloak at `http://localhost:8080/auth/realms/myrealm/`).
 >
-> As an alternative this npm package relies on `Introspection`. This is the ability to call the IdP on it's *introspection_URL*, pass in it's *clientID* & *secret* along with the received token. The IdP will verify the token (digitial signature, time window validity etc) and return a decoded token. The middlewear will console.log() this decoded token for review.
+> As an alternative this npm package relies on `Introspection`. This is the ability to call the IdP on it's *introspection_URL*, pass in it's *clientID* & *secret* along with the received token. The IdP will verify the token (digitial signature, time window validity etc) and return a decoded token. The middleware will console.log() this decoded token for review.
 >
 > Introspection only says if the token is valid. It is now upto the application developer check the `aud` claim to understand if the receiced token really is for them.
 >
